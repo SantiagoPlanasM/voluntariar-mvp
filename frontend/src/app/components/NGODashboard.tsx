@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router';
-import { Plus, Search, Users, Sprout, ChevronRight, CheckCircle, Clock, XCircle, Loader2 } from 'lucide-react';
+import { Plus, Search, Users, Sprout, ChevronRight, CheckCircle, Clock, XCircle, Loader2, LogOut } from 'lucide-react';
 import { api, Project, EnrollmentWithVolunteer, NGO, NGOStats } from '../../lib/api';
 import { useAuth } from '../../lib/AuthContext';
 
@@ -8,7 +8,7 @@ const safeNum = (v: any, f=0) => { const n=parseFloat(v); return isNaN(n)?f:n; }
 const safeMoney = (v: any) => { const n=safeNum(v); return '$'+(n>=1000?(n/1000).toFixed(1)+'k':n.toLocaleString('es-AR')); };
 
 export function NGODashboard() {
-  const { user }  = useAuth();
+  const { user, logout }  = useAuth();
   const navigate  = useNavigate();
   const [ngo, setNgo]         = useState<NGO | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -62,6 +62,11 @@ export function NGODashboard() {
             <button onClick={() => navigate('/ngo/create')}
               className="flex items-center gap-1.5 px-3 sm:px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs sm:text-sm font-bold hover:bg-emerald-700 transition-colors flex-shrink-0">
               <Plus className="w-4 h-4"/><span className="hidden sm:inline">Nuevo proyecto</span><span className="sm:hidden">Nuevo</span>
+            </button>
+            <button onClick={() => { logout(); navigate('/'); }}
+              className="w-9 h-9 bg-gray-100 text-gray-500 rounded-xl flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors"
+              title="Cerrar sesión">
+              <LogOut className="w-4 h-4"/>
             </button>
           </div>
           <div className="relative">
