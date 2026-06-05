@@ -7,7 +7,6 @@ services:
   - type: web
     name: voluntariar-api
     runtime: node
-    plan: free
     rootDir: backend
     buildCommand: npm install
     startCommand: npm run db:migrate && npm start
