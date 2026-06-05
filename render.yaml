@@ -1,11 +1,13 @@
 # render.yaml — configuración automática para Render
 # Render lee este archivo y crea los servicios automáticamente
 
+# render.yaml — configuración automática para Render
 services:
-  # ── Backend (API) ────────────────────────────────────────────────────────
+  # ── Backend (API) ──────────────────────────────────────────
   - type: web
     name: voluntariar-api
     runtime: node
+    plan: free
     rootDir: backend
     buildCommand: npm install
     startCommand: npm run db:migrate && npm start
@@ -26,10 +28,11 @@ services:
         value: https://voluntariar.onrender.com
     healthCheckPath: /health
 
-  # ── Frontend (Static Site) ───────────────────────────────────────────────
+  # ── Frontend (Static Site) ─────────────────────────────────
   - type: web
     name: voluntariar
     runtime: static
+    plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
@@ -41,7 +44,7 @@ services:
         source: /*
         destination: /index.html
 
-# ── Base de datos PostgreSQL ─────────────────────────────────────────────
+# ── Base de datos PostgreSQL ───────────────────────────────────
 databases:
   - name: voluntariar-db
     databaseName: voluntariar
