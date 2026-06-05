@@ -6,6 +6,7 @@ services:
   # ── Backend (API) ──────────────────────────────────────────
   - type: web
     name: voluntariar-api
+    plan: free
     runtime: node
     rootDir: backend
     buildCommand: npm install
@@ -31,7 +32,6 @@ services:
   - type: web
     name: voluntariar
     runtime: static
-    plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
