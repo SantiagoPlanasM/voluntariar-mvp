@@ -148,7 +148,7 @@ router.put('/:id', requireAuth, requireRole('ngo'), async (req, res) => {
     await db.run(
       `UPDATE projects SET title=$1, description=$2, full_description=$3, image=$4, category=$5, location=$6,
        duration=$7, type=$8, status=$9, volunteers_needed=$10, funding_goal=$11, cost_per_person=$12,
-       hours_per_week=$13, roles_needed=$14, requirements=$15, updated_at=datetime('now') WHERE id=$16`,
+       hours_per_week=$13, roles_needed=$14, requirements=$15, updated_at=CURRENT_TIMESTAMP WHERE id=$16`,
       [title.trim(), description.trim(), full_description?.trim() || null, image || null, category, location.trim(),
        duration?.trim() || null, type, status || 'active', parseInt(volunteers_needed),
        parseFloat(funding_goal) || 0, parseFloat(cost_per_person) || 0,

@@ -102,12 +102,12 @@ router.patch('/:id', requireAuth, requireRole('ngo'), async (req, res) => {
     if (!enrollment) return res.status(404).json({ error: 'Inscripción no encontrada o sin permiso' });
 
     const oldStatus = enrollment.status;
-    await db.run(`UPDATE enrollments SET status=$1, updated_at=datetime('now') WHERE id=$2`, [status, req.params.id]);
+    await db.run(`UPDATE enrollments SET status=$1, updated_at=CURRENT_TIMESTAMP WHERE id=$2`, [status, req.params.id]);
 
     if (status === 'approved' && oldStatus !== 'approved') {
       await db.run('UPDATE projects SET current_volunteers = current_volunteers + 1 WHERE id=$1', [enrollment.project_id]);
     } else if (status === 'rejected' && oldStatus === 'approved') {
-      await db.run('UPDATE projects SET current_volunteers = MAX(0, current_volunteers - 1) WHERE id=$1', [enrollment.project_id]);
+      await db.run('UPDATE projects SET current_volunteers = GREATEST(0, current_volunteers - 1) WHERE id=$1', [enrollment.project_id]);
     }
 
     const notifTitle = status === 'approved'

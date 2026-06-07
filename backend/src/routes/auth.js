@@ -111,7 +111,7 @@ router.put('/me', requireAuth, async (req, res) => {
       if (nameErr) return res.status(400).json({ error: nameErr });
     }
     await db.run(
-      `UPDATE users SET name=$1, bio=$2, location=$3, avatar=$4, updated_at=datetime('now') WHERE id=$5`,
+      `UPDATE users SET name=$1, bio=$2, location=$3, avatar=$4, updated_at=CURRENT_TIMESTAMP WHERE id=$5`,
       [name, bio, location, avatar, req.user.id]
     );
     const updated = await db.get('SELECT id, name, email, role, avatar, bio, location FROM users WHERE id = $1', [req.user.id]);
